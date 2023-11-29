@@ -6,6 +6,7 @@ import random
 
 detection_threshold = 0.5
 tracker = Tracker()
+
 colors = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for j in range(10)]
 
 video_path = os.path.join('.', 'data', 'people.mp4')
