@@ -1,9 +1,11 @@
 import os
 import cv2
 from ultralytics import YOLO
+from tracker import Tracker
 import random
 
 detection_threshold = 0.5
+tracker = Tracker()
 video_path = os.path.join('.', 'data', 'people.mp4')
 cap = cv2.VideoCapture(video_path)
 ret, frame = cap.read()
@@ -25,6 +27,11 @@ while ret:
             class_id = int(class_id)
             if score > detection_threshold:
                 detections.append([x1, y1, x2, y2, score])
+
+        tracker.update(frame, detections)
+        for track in tracker.tracks:
+            x1, y1, x2, y2 = track.bbox
+            track_id = track.track_id
 
             cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (255,0,0), 3)
     cap_out.write(frame)
